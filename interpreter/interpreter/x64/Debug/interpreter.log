@@ -1,0 +1,10 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(467,5): warning MSB8028: 中间目录(x64\Debug\)包含从另一个项目(interpreter.vcxproj, jvav.vcxproj)共享的文件。   这会导致错误的清除和重新生成行为。
+  Main.cpp
+D:\AsmTool\interpreter\interpreter\Token.h(115,32): warning C4244: “return”: 从“uint”转换到“int”，可能丢失数据
+  Token.cpp
+D:\AsmTool\interpreter\interpreter\Token.h(115,32): warning C4244: “return”: 从“uint”转换到“int”，可能丢失数据
+D:\AsmTool\interpreter\interpreter\Token.cpp(250,27): warning C4244: “return”: 从“uint”转换到“int”，可能丢失数据
+  pack_data.cpp
+D:\AsmTool\interpreter\interpreter\Token.h(115,32): warning C4244: “return”: 从“uint”转换到“int”，可能丢失数据
+  正在生成代码...
+  interpreter.vcxproj -> D:\AsmTool\interpreter\x64\Debug\jvav sprite.exe
