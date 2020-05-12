@@ -19,9 +19,12 @@ op get_operator(char c, TokenType& type) {
 	}
 }
 
-void pack_string(string str,Meta& data) {
+Meta pack_string(string& str,MetaPool* pool) {
+	Meta data = pool->allocate(str.size() + 1);
+
 	memcpy(data.data, str.c_str(), str.size());
 	*((char*)data.data + str.size()) = '\0';
+	return data;
 }
 
 string unpack_string(Meta& data) {
@@ -29,19 +32,91 @@ string unpack_string(Meta& data) {
 	return res;
 }
 
-int operat_plus(int num1, int num2) {
-	return num1 + num2;
+Token operat_plus(Token num1, Token num2, MetaPool* pool) {
+	if (num1.type() != num2.type())
+		throw string("operator + : fail to convert lhs type to rhs type");
+	string lhs, rhs;
+	Token t; Meta m;
+	switch (num1.type())
+	{
+	case INTEGER:
+		return Token(INTEGER, num1.value() + num2.value());
+	case FLOAT:
+		return Token(FLOAT,
+			pack_float(
+				unpack_float(num1.value()) +
+				unpack_float(num2.value())
+			)
+		);
+	case STRING:
+		//to many waste!!
+		lhs = unpack_string(num1.data());
+		rhs = unpack_string(num2.data());
+		lhs = lhs + rhs;
+		m = pack_string(lhs,pool);
+		t.data() = m;
+		t.type() = STRING;
+		break;
+	default:
+		throw string("operator + : don't support this type of operation");
+	}
+	return t;
 }
-int operat_sub(int num1, int num2) {
-	return num1 - num2;
+Token operat_sub(Token num1, Token num2, MetaPool* pool) {
+	if (num1.type() != num2.type())
+		throw string("operator - : fail to convert lhs to rhs type ");
+	switch (num2.type())
+	{
+	case INTEGER:
+		return Token(INTEGER, num1.value() - num2.value());
+	case FLOAT:
+		return Token(FLOAT,
+			pack_float(
+				unpack_float(num1.value()) -
+				unpack_float(num2.value())
+			)
+		);
+	default:
+		throw string("operator - : don't support this type of operation");
+	}
 }
 
-int operat_div(int num1, int num2) {
-	return num1 / num2;
+Token operat_div(Token num1, Token num2, MetaPool* pool) {
+	if (num1.type() != num2.type())
+		throw string("operator / : fail to convert lhs to rhs type ");
+	switch (num2.type())
+	{
+	case INTEGER:
+		return Token(INTEGER, num1.value() / num2.value());
+	case FLOAT:
+		return Token(FLOAT,
+			pack_float(
+				unpack_float(num1.value()) /
+				unpack_float(num2.value())
+			)
+	);
+	default:
+		throw string("operator / : don't support this type of operation");
+	}
 }
 
-int operat_mul(int num1, int num2) {
-	return num1 * num2;
+Token operat_mul(Token num1, Token num2, MetaPool* pool) {
+	if (num1.type() != num2.type())
+		throw string("operator * : fail to convert lhs to rhs type ");
+	switch (num2.type())
+	{
+	case INTEGER:
+		return Token(INTEGER, num1.value() * num2.value());
+	case FLOAT:
+		return Token(FLOAT, 
+			pack_float(
+				unpack_float(num1.value()) * 
+				unpack_float(num2.value())
+			)
+		);
+	default:
+		throw string("operator * : don't support this type of operation");
+	}
 }
 
 uint pack_float(float f) {

@@ -3,10 +3,11 @@
 #include "Token.h"
 #include "common.h"
 
-int operat_plus(int num1, int num2);
-int operat_sub(int num1, int num2);
-int operat_div(int num1, int num2);
-int operat_mul(int num1, int num2);
+
+Token operat_plus(Token num1, Token num2,MetaPool* pool);
+Token operat_sub(Token num1, Token num2,MetaPool* pool);
+Token operat_div(Token num1, Token num2,MetaPool* pool);
+Token operat_mul(Token num1, Token num2,MetaPool* pool);
 
 op get_operator(char c, TokenType& type);
 
@@ -17,7 +18,7 @@ inline op unpack_operator(uint val) {
 inline uint pack_string_size(string str) { return str.size() + 1; }
 
 //data's size must be str.size() + 1
-void pack_string(string str,Meta& data);
+Meta pack_string(string& str,MetaPool* pool);
 
 string unpack_string(Meta& data);
 

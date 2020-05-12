@@ -80,3 +80,36 @@ private:
 	//vector<void*> large_pages;
 	MetaPage pages[block_num];
 };
+
+
+//for class need to allocate temparory memory,they can inherit this class
+class MetaPool {
+public:
+	virtual ~MetaPool() { releaseAll(); }
+	MetaPool() { pool.reserve(8); }
+
+	Meta allocate(uint size,uint* index = nullptr) {
+		Meta new_mem = MetaAllocator::allocate(size);
+		pool.push_back(new_mem);
+		if (index) *index = pool.size() - 1;
+		return new_mem;
+	}
+
+	Meta update_pool(uint index,uint size) {
+		Meta old_meta = pool[index];
+		MetaAllocator::deallocate(old_meta);
+		Meta new_meta = MetaAllocator::allocate(size);
+		pool[index] = new_meta;
+		return new_meta;
+	}
+
+	void releaseAll() {
+		for (auto m : pool) {
+			MetaAllocator::deallocate(m);
+		}
+		pool.clear();
+	}
+
+private:
+	vector<Meta> pool;
+};
