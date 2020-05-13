@@ -1,0 +1,20 @@
+mian{
+    "jvav sprite finding prime example program"
+    int a = 2
+    int b = 2
+    int flag = true
+    while(a < 100){
+        b = 2
+        flag = true
+        while(b < a){
+            if(a % b == 0){
+                flag = false
+            }
+            b = b + 1
+        }
+        if(flag){
+            a + " is a prime "
+        }
+        a = a + 1
+    }
+}
