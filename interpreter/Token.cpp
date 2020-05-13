@@ -661,6 +661,10 @@ void Interpreter::statement(ASTNode* root) {
 }
 
 //currnetly we only support integer so we don't consider other object types
+//			^
+//			|
+//			|
+//  That's bullshit now we support other types 
 void Interpreter::assign(Assign* ass) {
 	Token lhs_token = ass->lnode->token;
 	string id = unpack_string(lhs_token.data());
