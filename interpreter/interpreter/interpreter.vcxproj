@@ -140,20 +140,24 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="common.h" />
+    <ClInclude Include="JVM.h" />
     <ClInclude Include="Meta.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="pack_data.h" />
     <ClInclude Include="system_invoke.h" />
     <ClInclude Include="Token.h" />
     <ClInclude Include="Uncopyable.h" />
+    <ClInclude Include="windows_wrapper.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="JVM.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Meta.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="pack_data.cpp" />
     <ClCompile Include="system_invoke.cpp" />
     <ClCompile Include="Token.cpp" />
+    <ClCompile Include="windows_wrapper.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -110,6 +110,8 @@ public:
 		pool.clear();
 	}
 
+	uint get_curr_pool_size() { return pool.size(); }
+	void release_pool(uint index);
 private:
 	vector<Meta> pool;
 };

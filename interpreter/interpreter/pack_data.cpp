@@ -14,6 +14,15 @@ op get_operator(char c, TokenType& type) {
 	case '*':
 		type = MUL_DIV;
 		return operat_mul;
+	case '<':
+		type = CMP_OP;
+		return cmp_less;
+	case '>':
+		type = CMP_OP;
+		return cmp_larger;
+	case '%':
+		type = MUL_DIV;
+		return operat_perc;
 	default:
 		return nullptr;
 	}
@@ -119,11 +128,43 @@ Token operat_mul(Token num1, Token num2, MetaPool* pool) {
 	}
 }
 
-uint pack_float(float f) {
-	uint v = *(uint*)&f;
-	return v;
+Token operat_perc(Token lhs,Token rhs,MetaPool* pool) {
+	if (lhs.type() != rhs.type())
+		throw string("operator % : fail to lhs to rhs ");
+	else if (lhs.type() != INTEGER)
+		throw string("operator % : operator % only support data type INTEGER");
+
+	return Token(INTEGER,(int)lhs.value() % (int)rhs.value());
 }
-float unpack_float(uint v) {
-	float f = *(float*)&v;
-	return f;
+
+#define CMP_HELPER(lhs,rhs,opera)\
+	if(lhs.type() != rhs.type()){\
+		throw string("invaild less operator lhs's type must be the same as rhs's type");\
+	}\
+	switch(lhs.type()){\
+	case INTEGER:\
+		return Token(INTEGER,(int)lhs.value() opera (int)rhs.value());\
+	case FLOAT:\
+		return Token(INTEGER,unpack_float(lhs.value()) opera unpack_float(rhs.value()));\
+	case STRING:\
+		return Token(INTEGER,unpack_string(lhs.data()) opera unpack_string(rhs.data()));\
+	}\
+	throw string("operator : invaild type ,operator don't support");
+
+
+// lhs < rhs ?
+Token cmp_less(Token lhs, Token rhs, MetaPool* pool) {
+	CMP_HELPER(lhs, rhs, < );
+}
+
+Token cmp_larger(Token lhs, Token rhs, MetaPool* pool) {
+	CMP_HELPER(lhs,rhs,>);
+}
+
+Token cmp_equal(Token lhs,Token rhs,MetaPool* pool) {
+	CMP_HELPER(lhs, rhs, == );
+}
+
+Token cmp_inequal(Token lhs,Token rhs,MetaPool* pool) {
+	CMP_HELPER(lhs,rhs, != );
 }

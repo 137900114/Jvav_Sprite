@@ -32,6 +32,12 @@
     <ClInclude Include="system_invoke.h">
       <Filter>源文件</Filter>
     </ClInclude>
+    <ClInclude Include="JVM.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="windows_wrapper.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Token.cpp">
@@ -50,6 +56,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="system_invoke.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="JVM.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="windows_wrapper.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

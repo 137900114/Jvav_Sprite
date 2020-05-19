@@ -1,0 +1,53 @@
+func printNum(int a,int bits){
+    "remember this in 3 seconds : "
+    str num = " "
+    int counter = 0
+    while(counter < bits){
+        counter = counter + 1
+        num = " "+ (a % 10) + num 
+        a = a / 10
+    }
+    "|" + num + "|" 
+}
+
+func inputAns(ref int ans,int b,int bits){
+    int in = 0
+    int counter = 0
+    ans = 0
+    
+    while(counter < bits){
+        "input the " + (counter + 1) + "th number "
+        input(in)
+        ans = ans * 10 + in
+        counter = counter + 1
+    }
+}
+
+mian{
+    clear()
+    float sleep_time = 3
+    int in = 0
+    float number = 0
+    int target_number = 0
+    int ans_num = 0
+    int power = 10
+    int counter = 1
+
+    while(counter != 3){
+        random(number)
+        target_number = number * power
+        printNum(target_number,counter)
+        sleep(sleep_time)
+        clear()
+        inputAns(ans_num,target_number,counter)
+        if(ans_num != target_number){
+            "you didn't pass the memory test you idiot "
+            exit()
+        }
+        power = power * 10
+        counter = counter + 1
+        clear()
+    }
+
+    "You pass the memory test.You really are a smart ass"
+}

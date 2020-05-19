@@ -1,4 +1,5 @@
-﻿#include "Token.h"
+﻿
+#include "JVM.h"
 #include "pack_data.h"
 #include <fstream>
 #include <ctime>
@@ -13,6 +14,12 @@ const char* fbi_warning =
 "input help() for more information\n"
 ;
 
+
+const char* zhy = 
+"Jvav Sprite Powered by Dr.ZHY, Ojbkle Coporation\n"
+"All Rights Reserved\n\n"
+;
+
 bool check_extent_name(string file) {
 	return file.substr(file.size() - 4, 4) == "jspr";
 }
@@ -25,10 +32,10 @@ int main(int argc,char** args) {
 	bool run = true;
 	string target = "";
 
+#ifndef _DEBUG
 	if (argc <= 1) {
 		//activate command line mode
 		printf(fbi_warning);
-
 		while (true) {
 			try {
 				string exp;
@@ -79,6 +86,7 @@ int main(int argc,char** args) {
 			lines.push_back(line);
 		}
 
+		printf(zhy);
 		try {
 			jvav.excute(lines);
 		}
@@ -86,4 +94,32 @@ int main(int argc,char** args) {
 			printf("runtime error : %s",e.c_str());
 		}
 	}
+#else
+	target = "D:\\AsmTool\\interpreter\\x64\\Release\\B_system_interaction.jspr";
+
+	if (!check_extent_name(target)) {
+		printf("jvav sprite file should end with .jspr!!");
+		return -1;
+	}
+
+	ifstream ifs(target);
+	if (!ifs.is_open()) {
+		printf("invaild target file name %s\n", target.c_str());
+		return -1;
+	}
+
+	vector<string> lines;
+	string line;
+	while (getline(ifs, line)) {
+		lines.push_back(line);
+	}
+
+	try {
+		jvav.excute(lines);
+	}
+	catch (string e) {
+		printf("runtime error : %s", e.c_str());
+	}
+#endif
+
 }

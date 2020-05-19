@@ -57,3 +57,10 @@ void MetaAllocator::deallocate(Meta mem) {
 }
 
 MetaAllocator MetaAllocator::allocator;
+
+void MetaPool::release_pool(uint index) {
+	for (int i = index; i != pool.size(); i++) {
+		MetaAllocator::deallocate(pool[i]);
+	}
+	pool.erase(pool.begin() + index,pool.end());
+}
