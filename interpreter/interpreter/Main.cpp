@@ -31,8 +31,7 @@ int main(int argc,char** args) {
 	bool compile = false;
 	bool run = true;
 	string target = "";
-
-#ifndef _DEBUG
+	
 	if (argc <= 1) {
 		//activate command line mode
 		printf(fbi_warning);
@@ -94,32 +93,5 @@ int main(int argc,char** args) {
 			printf("runtime error : %s",e.c_str());
 		}
 	}
-#else
-	target = "D:\\AsmTool\\interpreter\\x64\\Release\\B_system_interaction.jspr";
-
-	if (!check_extent_name(target)) {
-		printf("jvav sprite file should end with .jspr!!");
-		return -1;
-	}
-
-	ifstream ifs(target);
-	if (!ifs.is_open()) {
-		printf("invaild target file name %s\n", target.c_str());
-		return -1;
-	}
-
-	vector<string> lines;
-	string line;
-	while (getline(ifs, line)) {
-		lines.push_back(line);
-	}
-
-	try {
-		jvav.excute(lines);
-	}
-	catch (string e) {
-		printf("runtime error : %s", e.c_str());
-	}
-#endif
 
 }
