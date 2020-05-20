@@ -19,11 +19,15 @@ map<string, sys_par_invoke> map_sys_par_invoke = {
 };
 
 map<string, string> map_invoke_describe = {
-	{"oruga","oruga : print a king of Mars on the screen(だからよ、止まるんじゃねぇぞ)\n"
+	{"oruga","oruga | format : func oruga() | print a king of Mars on the screen(だからよ、止まるんじゃねぇぞ)\n"
 	   "And print the version of jvav system (which will be 0.114.514 forever)\n"},
-	{"help","help : introduce what's jvav and jvav's grammar birefly\n"},
-	{"clear","clear up the console screen\n"}
-	,{"exit","exit the jvav command line\n"}
+	{"help","help | format : help() | introduce what's jvav and jvav's grammar birefly\n"},
+	{"clear","clear | format : clear() | clear up the console screen \n"}
+	,{"exit","exit | format : exit() | exit the jvav sprite program \n"}
+	,{"sleep","sleep | format : sleep(float time) | let this process sleep for <time> seconds "}
+	,{"input","input | format : input(ref int content) or input(ref float content) or input(ref str content) | \n"
+				"let the user input some content.If the user input doesn't match the type, the system will throw a error"}
+	,{"random","random | random(ref float num) | generate a random float number between 0~1"}
 };
 
 
@@ -140,6 +144,29 @@ const char* script_grammar =
 "Example program about branch and loop is submitted to github : \n https://github.com/137900114/Jvav_Sprite \n\n"
 ;
 
+const char* function_grammar = 
+"Now jvav sprite supports function.You can define functions by : \n"
+"<func> func_name ( <parameters> ) <field>\n"
+"<func> is a system reserved word 'func'. <parameters> are the arguments you want to pass in to the function "
+"there are two ways to pass the parameters : by value or by reference.If you want to pass value into the function you can \n"
+"simply declare the parameters as : <declare word> object_name. for example :\n"
+"func example_func(int a,float b,str c).\n"
+"Meanwhile,if you want to pass reference into the function.You should add a 'ref' before the <declare word> which looks like :\n"
+"func exmaple_func(ref int a,float b,str c)\n"
+"Want's the difference between passing a value and a reference ? Well, the reference here act like pointers in C language.\n"
+"If you pass a value into a function,the function will make a copy of it so however the copy changes ,it will not affect the \n"
+"outside of the function.However if you pass a reference into the function,when you change the renference in the function,the object\n"
+"the object refered will change via the reference.In a word,if want to get some feedback from calling a function, pass a reference into it\n"
+".Otherwise,pass by value is your best choice.\n"
+"To call a function,you should use a single statement : func_name(<parameters>).It is illegal to call a function other "
+"statements.For example, some_func(114,514) is a good call,while int a = some_func(114,514) is illegal\n"
+"Since,the reference need to refer a object.You can only pass a object to a reference.For example \n"
+"If I define a function func a(ref str c), call function a by a(\"114,514\") is illegal because a constant string is not a object\n"
+"Some system functions are defined that you can call immediately,input s after you call help() for more information \n"
+"Example program about function is submitted to github : \n https://github.com/137900114/Jvav_Sprite \n\n"
+;
+
+
 const char* speical_grammar = "";
 
 void invoke_oruga() {
@@ -193,6 +220,10 @@ void invoke_help() {
 		printf("input anything to continue\n");
 		getline(cin,in);
 		invoke_clear();
+		printf(str_organize(function_grammar));
+		printf("input anything to continue\n");
+		getline(cin, in);
+		invoke_clear();
 	}
 	else if (in == "s") {
 		printf("here is all the system functions supported:\n");
@@ -234,7 +265,7 @@ void invoke_sleep(vector<Token>& par, MetaPool* pool) {
 	Object obj;
 	switch (par[0].type()) {
 	case TokenType::FLOAT:
-		w_sleep(unpack_float(obj.value));
+		w_sleep(unpack_float(par[0].value()));
 		return;
 	case OBJECT:
 		obj = ObjectPool::query_object(unpack_string(par[0].data()));
